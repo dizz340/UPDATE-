@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{background:#0b1020;color:#fff;font-family:Arial}
+.panel{max-width:600px;margin:40px auto;background:#111833;padding:20px;border-radius:16px}
+input,textarea,button{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none}
+button{background:#4da3ff;color:#000;font-weight:bold}
+.item{background:#1a2350;padding:10px;border-radius:10px;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="panel">
+<h2>BY IRFAN</h2>
+
+<input id="title" placeholder="Judul">
+<input id="url" placeholder="URL">
+<input id="img" placeholder="URL Gambar">
+<textarea id="desc" placeholder="Deskripsi"></textarea>
+
+<label>Mulai Aktif</label>
+<input id="start" type="datetime-local">
+
+<label>Berakhir</label>
+<input id="end" type="datetime-local">
+
+<button onclick="add()">Tambah</button>
+
+<div id="list"></div>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem('links3d')||'[]');
+const list=document.getElementById('list');
+
+function render(){
+ list.innerHTML='';
+ data.forEach((d,i)=>{
+  list.innerHTML+=`
+   <div class="item">
+    <b>${d.title}</b><br>
+    ${d.start || '∞'} → ${d.end || '∞'}
+    <button onclick="del(${i})">Hapus</button>
+   </div>`;
+ });
+ localStorage.setItem('links3d',JSON.stringify(data));
+}
+
+function add(){
+ data.push({
+  title:title.value,
+  url:url.value,
+  img:img.value,
+  desc:desc.value,
+  start:start.value,
+  end:end.value
+ });
+ title.value=url.value=img.value=desc.value=start.value=end.value='';
+ render();
+}
+
+function del(i){data.splice(i,1);render()}
+render();
+</script>
+</body>
+</html>
